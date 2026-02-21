@@ -1,19 +1,31 @@
 {
   "name": "nicotordev-facebook-marketplace-bot",
-  "module": "index.ts",
-  "type": "module",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "playwright": "^1.58.2",
-    "selenium-webdriver": "^4.41.0"
-  },
+  "type": "module",
   "workspaces": [
-    "apps/*"
-  ]
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun run -c \"apps/frontend\" dev & bun run -c \"apps/api\" dev",
+    "frontend:dev": "bun run -c \"apps/frontend\" dev",
+    "api:dev": "bun run -c \"apps/api\" dev",
+    "build": "bun run -c \"apps/frontend\" build && bun run -c \"apps/api\" build",
+    "frontend:build": "bun run -c \"apps/frontend\" build",
+    "api:build": "bun run -c \"apps/api\" build",
+    "start": "bun run -c \"apps/api\" start",
+    "frontend:start": "bun run -c \"apps/frontend\" start",
+    "api:start": "bun run -c \"apps/api\" start",
+    "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+    "clean": "rm -rf node_modules apps/**/node_modules packages/**/node_modules .turbo dist apps/**/dist packages/**/dist",
+    "pw:install": "bunx playwright install --with-deps",
+    "pw:test": "bunx playwright test",
+    "pw:codegen": "bunx playwright codegen",
+    "selenium:test": "node --test ./apps/api/src/__tests__/selenium.test.mjs"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^25.3.0",
+    "typescript": "^5.9.3"
+  }
 }

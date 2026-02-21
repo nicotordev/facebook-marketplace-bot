@@ -1,25 +1,31 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler", // Optimizado para Bun y herramientas modernas como Vite/Esbuild
+    "moduleDetection": "force",
     "lib": ["ESNext"],
-    "types": ["node"],
+    "types": ["bun", "node"], // Permite usar APIs de Bun y Node (como en Playwright)
     "strict": true,
     "skipLibCheck": true,
     
-    /* Hono & Performance */
-    "isolatedModules": true,     // Necesario para transpiladores rápidos como SWC o Esbuild
-    "verbatimModuleSyntax": true, // Limpieza absoluta de tipos en los imports
+    /* Hono & JSX (Fundamental si usas Hono) */
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    
+    /* Performance & Modern Syntax */
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "noPropertyAccessFromIndexSignature": true, // Más estricto en 2026 para evitar errores de typo
     
     /* Salida */
     "outDir": "./dist",
     "rootDir": "./src",
     "sourceMap": true,
-    "noEmit": false,            // Cambiar a true si usas `tsx` o `esbuild` para compilar
+    "noEmit": true, // Bun transpila TS nativamente, no necesitas generar .js
     
-    /* Calidad de código 2026 */
-    "noUncheckedIndexedAccess": true, // Seguridad extra en arrays/objetos
+    /* Calidad de código */
+    "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true
