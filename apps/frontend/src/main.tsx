@@ -6,6 +6,7 @@ import App from './App.tsx'
 import { Root } from './Root'
 import SessionProvider from './providers/session-provider'
 import { LoginPage } from './pages/login-page'
+import { SignupPage } from './pages/signup-page'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <LoginPage />,
+      },
+      {
+        path: 'signup',
+        element: <SignupPage />,
       },
     ],
   },

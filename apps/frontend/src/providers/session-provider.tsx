@@ -43,13 +43,15 @@ export default function SessionProvider({
     return <LoadingScreen />;
   }
 
-  // Not logged in and not on login page → redirect to login
-  if (session === null && location.pathname !== "/login") {
+  const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
+
+  // Not logged in and not on auth page → redirect to login
+  if (session === null && !isAuthPage) {
     return <Navigate to="/login" replace />;
   }
 
-  // Logged in and on login page → redirect to home
-  if (session !== null && location.pathname === "/login") {
+  // Logged in and on auth page → redirect to home
+  if (session !== null && isAuthPage) {
     return <Navigate to="/" replace />;
   }
 

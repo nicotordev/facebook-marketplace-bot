@@ -16,27 +16,42 @@ import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import sessionService from "@/services/session.service";
 
-export function LoginPage() {
+export function SignupPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     setLoading(true);
     try {
-      await sessionService.login({ username, password });
+      await sessionService.register({
+        username,
+        password,
+        ...(name.trim() && { name: name.trim() }),
+        ...(email.trim() && { email: email.trim() }),
+        ...(age.trim() && !Number.isNaN(Number(age)) && { age: parseInt(age, 10) }),
+      });
       navigate("/", { replace: true });
     } catch (err: unknown) {
-      const message =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data
-              ?.message
-          : null;
-      setError(message ?? "Login failed. Please try again.");
+      const res = err && typeof err === "object" && "response" in err
+        ? (err as { response?: { data?: { message?: string; error?: string } } }).response?.data
+        : null;
+      const message = res?.message ?? res?.error ?? "Sign up failed. Please try again.";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -46,8 +61,10 @@ export function LoginPage() {
     <div className="flex min-h-svh flex-col items-center justify-center bg-background p-4">
       <Card className={cn("w-full max-w-sm border-0 shadow-md")}>
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-xl font-semibold">Sign in</CardTitle>
-          <CardDescription>Enter your credentials to continue.</CardDescription>
+          <CardTitle className="text-xl font-semibold">Create an account</CardTitle>
+          <CardDescription>
+            Enter your details to get started.
+          </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="flex flex-col gap-4">
@@ -75,11 +92,61 @@ export function LoginPage() {
                 id="password"
                 type="password"
                 placeholder="Password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
                 required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="confirmPassword">Confirm password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirm password"
+                autoComplete="new-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                disabled={loading}
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="name">Name (optional)</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Your name"
+                autoComplete="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={loading}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email (optional)</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="age">Age (optional)</Label>
+              <Input
+                id="age"
+                type="number"
+                placeholder="Age"
+                min={1}
+                max={150}
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                disabled={loading}
               />
             </div>
           </CardContent>
@@ -93,16 +160,16 @@ export function LoginPage() {
               {loading ? (
                 <Spinner className="size-4" />
               ) : (
-                "Sign in"
+                "Sign up"
               )}
             </Button>
             <p className="text-muted-foreground text-center text-sm">
-              Don&apos;t have an account?{" "}
+              Already have an account?{" "}
               <Link
-                to="/signup"
+                to="/login"
                 className="font-medium text-primary underline underline-offset-4 hover:no-underline"
               >
-                Sign up
+                Sign in
               </Link>
             </p>
           </CardFooter>
