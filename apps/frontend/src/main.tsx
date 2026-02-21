@@ -4,18 +4,26 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { Root } from './Root'
+import SessionProvider from './providers/session-provider'
+import { LoginPage } from './pages/login-page'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
+    element: (
+      <SessionProvider>
+        <Root />
+      </SessionProvider>
+    ),
     children: [
       {
         index: true,
         element: <App />,
       },
-      // Añade más rutas aquí, por ejemplo:
-      // { path: 'about', element: <About /> },
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
     ],
   },
 ])
