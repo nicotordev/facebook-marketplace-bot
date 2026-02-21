@@ -1,0 +1,1 @@
+ALTER TABLE `facebook_accounts_table` ADD `password` text;

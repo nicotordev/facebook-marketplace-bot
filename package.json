@@ -3,8 +3,7 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ],
   "scripts": {
     "dev": "bun run --cwd apps/frontend dev & bun run --cwd apps/api dev",

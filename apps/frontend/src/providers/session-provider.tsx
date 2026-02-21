@@ -20,6 +20,7 @@ export default function SessionProvider({
   children: React.ReactNode;
 }) {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
 
   const fetchSession = async () => {
@@ -34,24 +35,27 @@ export default function SessionProvider({
 
   useEffect(() => {
     queueMicrotask(() => {
-      fetchSession();
+      fetchSession().finally(() => {
+        setLoading(false);
+      });
     });
   }, []);
 
   // Still loading
-  if (session === undefined) {
+  if (loading) {
     return <LoadingScreen />;
   }
 
-  const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/signup";
 
   // Not logged in and not on auth page → redirect to login
-  if (session === null && !isAuthPage) {
+  if (!session && !isAuthPage) {
     return <Navigate to="/login" replace />;
   }
 
   // Logged in and on auth page → redirect to home
-  if (session !== null && isAuthPage) {
+  if (session && isAuthPage) {
     return <Navigate to="/" replace />;
   }
 
