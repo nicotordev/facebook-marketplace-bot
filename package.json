@@ -1,0 +1,16 @@
+{
+  "name": "facebook-marketplace-bot",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "playwright": "^1.58.2",
+    "selenium-webdriver": "^4.41.0"
+  }
+}
