@@ -1,7 +1,29 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ESNext"],
+    "types": ["node"],
     "strict": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
-  }
+    "skipLibCheck": true,
+    
+    /* Hono & Performance */
+    "isolatedModules": true,     // Necesario para transpiladores rápidos como SWC o Esbuild
+    "verbatimModuleSyntax": true, // Limpieza absoluta de tipos en los imports
+    
+    /* Salida */
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "noEmit": false,            // Cambiar a true si usas `tsx` o `esbuild` para compilar
+    
+    /* Calidad de código 2026 */
+    "noUncheckedIndexedAccess": true, // Seguridad extra en arrays/objetos
+    "noImplicitOverride": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

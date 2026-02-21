@@ -1,5 +1,8 @@
 {
-  "name": "api",
+  "name": "nicotordev-facebook-marketplace-bot-api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "bun run --hot src/index.ts"
   },
@@ -7,6 +10,11 @@
     "hono": "^4.12.1"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@eslint/js": "^10.0.1",
+    "@types/bun": "latest",
+    "@types/node": "^25.3.0",
+    "eslint": "^10.0.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0"
   }
 }
